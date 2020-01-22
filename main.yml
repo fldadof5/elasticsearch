@@ -16,11 +16,35 @@
     es_enable_xpack: true
     es_api_basic_auth_username: elastic
     es_api_basic_auth_password: changeme
+    es_roles:
+      native:
+        microservice:
+          indices:
+            - names: "userlocation*"
+              privileges:
+                - read
+                - index
+                - create
+                - write
+                - delete
+    es_users:
+      native:
+        te2-user:
+          password: testing123
+          roles:
+            - power_user
+            - kibana_user
+            - monitoring_user
+        microservice-user:
+          password: testing123
+          roles:
+            - microservice
+            - kibana_user
     es_config:
       cluster.name: "test-cluster"
       #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
       #discovery.seed_hosts: ["10.0.0.21"] # Needed for 7.x
-      discovery.zen.ping.unicast.hosts: ["10.0.0.21", "10.0.0.22", "10.0.0.23"] # Needed for 6.x
+      discovery.zen.ping.unicast.hosts: ["172.16.0.21", "172.16.0.22", "172.16.0.23"] # Needed for 6.x
       network.bind_host: "0.0.0.0"
       network.publish_host: "{{ ansible_eth1.ipv4.address }}"
       http.port: 9200
@@ -54,7 +78,7 @@
       cluster.name: "test-cluster"
       #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
       #discovery.seed_hosts: ["10.0.0.21"] # Needed for 7.x
-      discovery.zen.ping.unicast.hosts: ["10.0.0.21", "10.0.0.22", "10.0.0.23"] # Needed for 6.x
+      discovery.zen.ping.unicast.hosts: ["172.16.0.21", "172.16.0.22", "172.16.0.23"] # Needed for 6.x
       network.bind_host: "0.0.0.0"
       network.publish_host: "{{ ansible_eth1.ipv4.address }}"
       http.port: 9200

@@ -9,7 +9,7 @@
 Vagrant.configure("2") do |config|
   config.vm.define "es01" do |es01|
     es01.vm.box = "centos/7"
-    es01.vm.network "private_network", ip: "10.0.0.21"
+    es01.vm.network "private_network", ip: "172.16.0.21"
     es01.vm.hostname = 'es01'
     es01.vm.provider "virtualbox" do |vb|
             vb.memory = "4096"
@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "es02" do |es02|
     es02.vm.box = "centos/7"
-    es02.vm.network "private_network",ip:"10.0.0.22"
+    es02.vm.network "private_network",ip:"172.16.0.22"
     es02.vm.hostname = 'es02'
     es02.vm.provider "virtualbox" do |vb|
             vb.memory = "4096"
@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "es03" do |es03|
     es03.vm.box = "centos/7"
-    es03.vm.network "private_network",ip:"10.0.0.23"
+    es03.vm.network "private_network",ip:"172.16.0.23"
     es03.vm.hostname = 'es03'
     es03.vm.provider "virtualbox" do |vb|
             vb.memory = "4096"
