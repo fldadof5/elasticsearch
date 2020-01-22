@@ -18,6 +18,9 @@ Vagrant.configure("2") do |config|
     es01.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
     es01.vm.provision "shell", inline: <<-SHELL
             cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+            sudo mkdir /root/.ssh
+            sudo chmod 700 /root/.ssh
+            sudo cat /home/vagrant/.ssh/me.pub > /root/.ssh/authorized_keys
     SHELL
   end
 
@@ -32,6 +35,9 @@ Vagrant.configure("2") do |config|
     es02.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
     es02.vm.provision "shell", inline: <<-SHELL
             cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+            sudo mkdir /root/.ssh
+            sudo chmod 700 /root/.ssh
+            sudo cat /home/vagrant/.ssh/me.pub > /root/.ssh/authorized_keys
     SHELL
   end
 
@@ -46,6 +52,9 @@ Vagrant.configure("2") do |config|
     es03.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
     es03.vm.provision "shell", inline: <<-SHELL
             cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+            sudo mkdir /root/.ssh
+            sudo chmod 700 /root/.ssh
+            sudo cat /home/vagrant/.ssh/me.pub > /root/.ssh/authorized_keys
     SHELL
   end
 end

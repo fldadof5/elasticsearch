@@ -8,12 +8,14 @@
     es_data_dirs:
       - "/data"
     es_xpack_trial: true
-    es_enable_auto_ssl_configuration: true
     es_version_lock: true
-    #es_enable_transport_ssl: true
-    #es_ssl_certificate_authority: "files/ca.crt"
-    #es_ssl_key: "files/elasticsearch.key"
-    #es_ssl_certificate: "files/elasticsearch.crt"
+    es_enable_transport_ssl: true
+    es_ssl_certificate_authority: "files/ca.crt"
+    es_ssl_key: "files/elasticsearch.key"
+    es_ssl_certificate: "files/elasticsearch.crt"
+    es_enable_xpack: true
+    es_api_basic_auth_username: elastic
+    es_api_basic_auth_password: changeme
     es_config:
       cluster.name: "test-cluster"
       #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
@@ -25,6 +27,8 @@
       node.data: false
       node.master: true
       bootstrap.memory_lock: true
+      xpack.security.audit.enabled: true
+      xpack.security.audit.outputs: [ index]
     es_plugins:
      - plugin: ingest-attachment
 
@@ -36,14 +40,16 @@
     es_log_dir: "/var/log/elasticsearch"
     es_data_dirs:
       - "/data"
-    es_enable_auto_ssl_configuration: true
     es_xpack_trial: true
     es_version: "6.5.4"
     es_version_lock: true
-    #es_enable_transport_ssl: true
-    #es_ssl_certificate_authority: "files/ca.crt"
-    #es_ssl_key: "files/elasticsearch.key"
-    #es_ssl_certificate: "files/elasticsearch.crt"
+    es_enable_transport_ssl: true
+    es_ssl_certificate_authority: "files/ca.crt"
+    es_ssl_key: "files/elasticsearch.key"
+    es_ssl_certificate: "files/elasticsearch.crt"
+    es_enable_xpack: true
+    es_api_basic_auth_username: elastic
+    es_api_basic_auth_password: changeme
     es_config:
       cluster.name: "test-cluster"
       #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
@@ -55,5 +61,7 @@
       node.data: true
       node.master: false
       bootstrap.memory_lock: true
+      xpack.security.audit.enabled: true
+      xpack.security.audit.outputs: [ index]
     es_plugins:
       - plugin: ingest-attachment
