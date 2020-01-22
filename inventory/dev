@@ -1,0 +1,14 @@
+[master_nodes]
+10.0.0.21
+
+[data_nodes]
+10.0.0.22
+10.0.0.23
+
+[master_nodes:vars]
+ansible_user=vagrant
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[data_nodes:vars]
+ansible_user=vagrant
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
