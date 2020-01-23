@@ -1,6 +1,6 @@
 - hosts: master_nodes
   roles:
-    #- role: elasticsearch
+    - role: elasticsearch
     - role: curator
   vars:
     es_heap_size: "1g"
@@ -16,7 +16,7 @@
     es_ssl_certificate: "files/elasticsearch.crt"
     es_enable_xpack: true
     es_api_basic_auth_username: elastic
-    es_api_basic_auth_password: changeme
+    es_api_basic_auth_password: changeme123
     es_config:
       cluster.name: "test-cluster"
       #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
@@ -77,7 +77,7 @@
 
 - hosts: data_nodes
   roles:
-    #- role: elasticsearch
+    - role: elasticsearch
     - role: curator
   vars:
     es_heap_size: "1g"
@@ -93,7 +93,7 @@
     es_ssl_certificate: "files/elasticsearch.crt"
     es_enable_xpack: true
     es_api_basic_auth_username: elastic
-    es_api_basic_auth_password: changeme
+    es_api_basic_auth_password: changeme123
     es_templates_fileglob: "files/template"
     es_roles:
       native:
