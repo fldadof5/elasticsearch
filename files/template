@@ -1,0 +1,68 @@
+{
+  "index_patterns": ["userlocation-*"],
+  "settings": {
+    "number_of_shards": 12,
+    "number_of_replicas" : 1
+  },
+  "mappings": {
+    "userlocation": {
+      "properties": {
+        "abandonTimestamp": {
+          "type": "long"
+        },
+        "detectionEventType": {
+          "type": "keyword"
+        },
+        "deviceActiveAtPersistTime": {
+          "type": "boolean"
+        },
+        "deviceActiveEndTimestamp": {
+          "type": "long"
+        },
+        "deviceActiveStartTimestamp": {
+          "type": "long"
+        },
+        "deviceId": {
+          "type": "keyword"
+        },
+        "id": {
+          "type": "keyword"
+        },
+        "lingerTimestamp": {
+          "type": "long"
+        },
+        "location": {
+          "properties": {
+            "x": {
+              "type": "double"
+            },
+            "y": {
+              "type": "double"
+            },
+            "z": {
+              "type": "double"
+            }
+          }
+        },
+        "logicalLocation": {
+          "type": "keyword"
+        },
+        "poiId": {
+          "type": "keyword"
+        },
+        "previousLogicalLocation": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "long"
+        },
+        "userId": {
+          "type": "keyword"
+        },
+        "venueId": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}

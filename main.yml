@@ -1,6 +1,6 @@
 - hosts: master_nodes
   roles:
-    - role: elastic.elasticsearch
+    - role: elasticsearch
   vars:
     es_heap_size: "1g"
     es_version: "6.5.4"
@@ -16,6 +16,41 @@
     es_enable_xpack: true
     es_api_basic_auth_username: elastic
     es_api_basic_auth_password: changeme
+    es_config:
+      cluster.name: "test-cluster"
+      #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
+      #discovery.seed_hosts: ["10.0.0.21"] # Needed for 7.x
+      discovery.zen.ping.unicast.hosts: ["172.16.0.21", "172.16.0.22", "172.16.0.23"] # Needed for 6.x
+      network.bind_host: "0.0.0.0"
+      network.publish_host: "{{ ansible_eth1.ipv4.address }}"
+      http.port: 9200
+      node.data: false
+      node.master: true
+      bootstrap.memory_lock: true
+      xpack.security.audit.enabled: true
+      xpack.security.audit.outputs: [ index]
+    es_plugins:
+     - plugin: ingest-attachment
+
+- hosts: data_nodes
+  roles:
+    - role: elasticsearch
+  vars:
+    es_heap_size: "1g"
+    es_log_dir: "/var/log/elasticsearch"
+    es_data_dirs:
+      - "/data"
+    es_xpack_trial: true
+    es_version: "6.5.4"
+    es_version_lock: true
+    es_enable_transport_ssl: true
+    es_ssl_certificate_authority: "files/ca.crt"
+    es_ssl_key: "files/elasticsearch.key"
+    es_ssl_certificate: "files/elasticsearch.crt"
+    es_enable_xpack: true
+    es_api_basic_auth_username: elastic
+    es_api_basic_auth_password: changeme
+    es_templates_fileglob: "files/template"
     es_roles:
       native:
         microservice:
@@ -40,40 +75,6 @@
           roles:
             - microservice
             - kibana_user
-    es_config:
-      cluster.name: "test-cluster"
-      #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
-      #discovery.seed_hosts: ["10.0.0.21"] # Needed for 7.x
-      discovery.zen.ping.unicast.hosts: ["172.16.0.21", "172.16.0.22", "172.16.0.23"] # Needed for 6.x
-      network.bind_host: "0.0.0.0"
-      network.publish_host: "{{ ansible_eth1.ipv4.address }}"
-      http.port: 9200
-      node.data: false
-      node.master: true
-      bootstrap.memory_lock: true
-      xpack.security.audit.enabled: true
-      xpack.security.audit.outputs: [ index]
-    es_plugins:
-     - plugin: ingest-attachment
-
-- hosts: data_nodes
-  roles:
-    - role: elastic.elasticsearch
-  vars:
-    es_heap_size: "1g"
-    es_log_dir: "/var/log/elasticsearch"
-    es_data_dirs:
-      - "/data"
-    es_xpack_trial: true
-    es_version: "6.5.4"
-    es_version_lock: true
-    es_enable_transport_ssl: true
-    es_ssl_certificate_authority: "files/ca.crt"
-    es_ssl_key: "files/elasticsearch.key"
-    es_ssl_certificate: "files/elasticsearch.crt"
-    es_enable_xpack: true
-    es_api_basic_auth_username: elastic
-    es_api_basic_auth_password: changeme
     es_config:
       cluster.name: "test-cluster"
       #cluster.initial_master_nodes: ["10.0.0.21:9300"] # Needed for 7.x
