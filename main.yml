@@ -1,6 +1,7 @@
 - hosts: master_nodes
   roles:
-    - role: elasticsearch
+    #- role: elasticsearch
+    - role: curator
   vars:
     es_heap_size: "1g"
     es_version: "6.5.4"
@@ -31,10 +32,53 @@
       xpack.security.audit.outputs: [ index]
     es_plugins:
      - plugin: ingest-attachment
+    elasticsearch_curator_action_yaml: |
+      ---
+      actions:
+          1:
+             action: create_index
+             description: Create index as named
+             options:
+                  name: '<userlocation-{now/d+1d}>'
+                  continue_if_exception: true
+                  disable_action: false
+          2:
+             action: delete_indices
+             description: Delete indices
+             options:
+                  ignore_empty_list: True
+                  disable_action: false
+             filters:
+                 - filtertype: pattern
+                   kind: prefix
+                   value: userlocation-
+                 - filtertype: age
+                   source: name
+                   direction: older
+                   timestring: '%Y.%m.%d'
+                   unit: days
+                   unit_count: 10
+          3:
+             action: delete_indices
+             description: Delete audit indices
+             options:
+                ignore_empty_list: True
+                disable_action: false
+             filters:
+               - filtertype: pattern
+               kind: prefix
+               value: .security_audit_log-
+               - filtertype: age
+               source: name
+               direction: older
+               timestring: '%Y.%m.%d'
+               unit: days
+               unit_count: 7
 
 - hosts: data_nodes
   roles:
-    - role: elasticsearch
+    #- role: elasticsearch
+    - role: curator
   vars:
     es_heap_size: "1g"
     es_log_dir: "/var/log/elasticsearch"
@@ -90,3 +134,45 @@
       xpack.security.audit.outputs: [ index]
     es_plugins:
       - plugin: ingest-attachment
+    elasticsearch_curator_action_yaml: |
+      ---
+      actions:
+          1:
+             action: create_index
+             description: Create index as named
+             options:
+                  name: '<userlocation-{now/d+1d}>'
+                  continue_if_exception: true
+                  disable_action: false
+          2:
+             action: delete_indices
+             description: Delete indices
+             options:
+                  ignore_empty_list: True
+                  disable_action: false
+             filters:
+                 - filtertype: pattern
+                   kind: prefix
+                   value: userlocation-
+                 - filtertype: age
+                   source: name
+                   direction: older
+                   timestring: '%Y.%m.%d'
+                   unit: days
+                   unit_count: 10
+          3:
+             action: delete_indices
+             description: Delete audit indices
+             options:
+                ignore_empty_list: True
+                disable_action: false
+             filters:
+               - filtertype: pattern
+               kind: prefix
+               value: .security_audit_log-
+               - filtertype: age
+               source: name
+               direction: older
+               timestring: '%Y.%m.%d'
+               unit: days
+               unit_count: 7

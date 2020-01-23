@@ -1,0 +1,42 @@
+---
+# tasks file for curator
+
+- name: RedHat - add Elasticsearch curator repo
+  become: yes
+  template:
+    src: 'curator.repo.j2'
+    dest: '/etc/yum.repos.d/curator.repo'
+
+- name: RedHat - Install curator
+  become: yes
+  yum:
+    name: 'elasticsearch-curator-{{ elasticsearch_curator_version }}'
+    state: present
+    update_cache: yes
+
+- name: Ensure configuration directory exists.
+  file:
+    path: '{{ elasticsearch_curator_config_directory }}'
+    state: directory
+
+- name: Write curator.yml and action.yml to configuration directory.
+  copy:
+    dest: '{{ elasticsearch_curator_config_directory }}/{{ item.file }}'
+    content: '{{ item.content }}'
+  with_items:
+    - file: curator.yml
+      content: '{{ elasticsearch_curator_yaml }}'
+    - file: action.yml
+      content: '{{ elasticsearch_curator_action_yaml }}'
+
+- name: Configure cron jobs for Elasticsearch Curator.
+  cron:
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    state: "{{ item.state | default('present') }}"
+    minute: "{{ item.minute | default('*') }}"
+    hour: "{{ item.hour | default('*') }}"
+    day: "{{ item.day | default('*') }}"
+    weekday: "{{ item.weekday | default('*') }}"
+    month: "{{ item.month | default('*') }}"
+  with_items: "{{ elasticsearch_curator_cron_jobs }}"
